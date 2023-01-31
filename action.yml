@@ -1,5 +1,5 @@
-name: 'Push a file to another repository'
-description: 'Used for pushing a copy of a file to another repository'
+name: 'Push a file(s) to another repository'
+description: 'Used for pushing a copy of a file(s) to another repository, with possibly cleanup'
 inputs:
   source_file:
     description: 'Source file from the origin directory'
@@ -35,6 +35,10 @@ inputs:
     description: 'Git server host, default github.com'
     required: false
     default: github.com
+  cleanup:
+    description: 'Clears all files from the directory before the commit'
+    required: false
+    default: false
 runs:
   using: 'docker'
   image: 'Dockerfile'
@@ -49,6 +53,7 @@ runs:
     - ${{ inputs.git-server }}
     - ${{ inputs.rename }}
     - ${{ inputs.use-rsync }}
+    - ${{ inputs.cleanup }}
 branding:
   icon: 'git-commit'
   color: 'green'
