@@ -30,10 +30,11 @@ git clone --single-branch --branch $INPUT_DESTINATION_BRANCH "https://x-access-t
 if [ ! -z "$INPUT_CLEANUP" ]
 then
   echo "Cleaning up previous files"
+  PREV_DIR=$PWD
   cd "$CLONE_DIR"
   git ls-files -z | xargs -0 rm -f
-  cd "../.."
-fi  
+  cd "$PREV_DIR"
+fi
 
 if [ ! -z "$INPUT_RENAME" ]
 then
