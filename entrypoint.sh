@@ -27,6 +27,12 @@ git config --global user.email "$INPUT_USER_EMAIL"
 git config --global user.name "$INPUT_USER_NAME"
 git clone --single-branch --branch $INPUT_DESTINATION_BRANCH "https://x-access-token:$API_TOKEN_GITHUB@$INPUT_GIT_SERVER/$INPUT_DESTINATION_REPO.git" "$CLONE_DIR"
 
+if [ ! -z "$CLEANUP" ]
+then
+  echo "Cleaning up previous files"
+  git ls-files -z | xargs -0 rm -f
+fi  
+
 if [ ! -z "$INPUT_RENAME" ]
 then
   echo "Setting new filename: ${INPUT_RENAME}"
@@ -60,7 +66,12 @@ then
 fi
 
 echo "Adding git commit"
-git add .
+if [ ! -z "$CLEANUP" ]
+then
+  git add -A
+else
+  git add .
+fi
 if git status | grep -q "Changes to be committed"
 then
   git commit --message "$INPUT_COMMIT_MESSAGE"
